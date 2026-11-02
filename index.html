@@ -12,8 +12,6 @@
             --board: #fff;
             --sil: #ffffffcc;
             --dash: #fff;
-            --sky1: #6fd0ff;
-            --sky2: #d6f4ff;
             --s: min(16vw, 26vh);
             box-sizing: border-box;
             padding-top: env(safe-area-inset-top, 0px);
@@ -27,8 +25,6 @@
                 --board: #2b2a6a;
                 --sil: #ffffff26;
                 --dash: #8f86e0;
-                --sky1: #1b1b4b;
-                --sky2: #2d2a7a;
                 color-scheme: dark
             }
         }
@@ -38,8 +34,6 @@
             --board: #2b2a6a;
             --sil: #ffffff26;
             --dash: #8f86e0;
-            --sky1: #1b1b4b;
-            --sky2: #2d2a7a;
             color-scheme: dark
         }
 
@@ -70,21 +64,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            background: radial-gradient(circle at 14% 20%, #fff 0 5vw, transparent 5.1vw), radial-gradient(circle at 90% 14%, #fff 0 4vw, transparent 4.1vw),
-                radial-gradient(circle at 50% 118%, transparent 0 52%, #ff5d73 52% 55%, #ffa23a 55% 58%, #ffe14d 58% 61%, #58d36b 61% 64%, #4aa8ff 64% 67%, #9a6bff 67% 70%, transparent 70%),
-                linear-gradient(var(--sky1), var(--sky2))
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 16vh;
-            z-index: 0;
-            pointer-events: none;
-            background: radial-gradient(ellipse at 18% 100%, #58d36b 0 58%, transparent 59%), radial-gradient(ellipse at 70% 100%, #3fbf5a 0 52%, transparent 53%), radial-gradient(ellipse at 100% 100%, #6be07d 0 40%, transparent 41%)
+            background: #8fd3ff url("background.jpg") center / cover no-repeat
         }
 
         header,
@@ -172,12 +152,12 @@
         }
 
         .board {
-            background: linear-gradient(135deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .18));
-            -webkit-backdrop-filter: blur(16px) saturate(1.5);
-            backdrop-filter: blur(16px) saturate(1.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .06));
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
             border-radius: 44px;
             padding: 18px;
-            border: 2px solid rgba(255, 255, 255, .85);
+            border: 2px solid rgba(255, 255, 255, .6);
             box-shadow: 0 14px 40px rgba(59, 42, 122, .22), inset 0 2px 0 rgba(255, 255, 255, .9);
             min-height: 0;
             display: flex;
@@ -344,62 +324,6 @@
             border-top: 5px dotted var(--dash);
             padding-top: 4vh;
             width: 100%
-        }
-
-        .bubble {
-            position: relative;
-            background: #fff;
-            color: #3b2a7a;
-            border-radius: 30px;
-            padding: 12px 20px;
-            font-weight: 700;
-            font-size: clamp(1rem, 2.8vh, 1.5rem);
-            box-shadow: 0 5px 0 rgba(59, 42, 122, .18);
-            margin: 0;
-            max-width: 100%
-        }
-
-        .bubble::before {
-            content: "";
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            margin-left: -14px;
-            border: 14px solid transparent;
-            border-top: 0;
-            border-bottom-color: #fff
-        }
-
-        #mascot {
-            font-size: min(9vw, 16vh);
-            line-height: 1;
-            animation: hop 2.4s ease-in-out infinite
-        }
-
-        #round {
-            margin: 0;
-            font-weight: 700;
-            font-size: clamp(1.2rem, 3.6vh, 2rem)
-        }
-
-        #prog {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            font-size: min(2.8vw, 5.5vh)
-        }
-
-        #prog span {
-            filter: grayscale(1);
-            opacity: .3;
-            transition: .3s
-        }
-
-        #prog span.on {
-            filter: none;
-            opacity: 1;
-            animation: pop .5s
         }
 
         #win {
@@ -637,7 +561,9 @@
         const hud = () => { };
 
         /* a shape can come back only after 2 other rounds have passed */
+        const BASIC = ['circle', 'square', 'rectangle', 'triangle'];
         function nextSet() {
+            if (!hist.length) {hist.push(BASIC.slice()); return BASIC.slice()}
             const recent = new Set(hist.slice(-2).flat());
             const set = shuffle(Object.keys(S).filter(n => !recent.has(n))).slice(0, N);
             hist.push(set); return set;
